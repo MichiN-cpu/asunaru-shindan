@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>婚活診断｜あすなる愛媛の結婚相談所</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: #fdf6f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 13px;
+      color: #c4847a;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ===== TOP ===== */
+    .top-icon {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2d2d2d;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #777;
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .gender-btns {
+      display: flex;
+      gap: 12px;
+    }
+    .gender-btn {
+      flex: 1;
+      padding: 18px 8px;
+      border: 2px solid #e8c4be;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      color: #c4847a;
+      transition: all 0.2s;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .gender-btn:hover, .gender-btn.selected {
+      background: #c4847a;
+      color: #fff;
+      border-color: #c4847a;
+    }
+    .gender-btn .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+
+    /* ===== PROGRESS ===== */
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 6px;
+      background: #f0e0dc;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #c4847a;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+
+    /* ===== QUESTION ===== */
+    .q-num {
+      font-size: 12px;
+      color: #c4847a;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+    .q-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2d2d2d;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .choice-btn {
+      padding: 14px 16px;
+      border: 2px solid #eeddd9;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 15px;
+      color: #444;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .choice-btn:hover {
+      border-color: #c4847a;
+      background: #fff5f3;
+      color: #c4847a;
+    }
+    .choice-btn.selected {
+      border-color: #c4847a;
+      background: #c4847a;
+      color: #fff;
+    }
+
+    .nav-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .btn-back {
+      padding: 14px 20px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888;
+    }
+    .btn-next {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #c4847a;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.4;
+      pointer-events: none;
+      transition: all 0.2s;
+    }
+    .btn-next.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ===== RESULT ===== */
+    .result-badge {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .result-badge .badge-icon { font-size: 52px; }
+    .result-type {
+      display: inline-block;
+      background: #fbeae7;
+      color: #c4847a;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-top: 10px;
+      letter-spacing: 0.05em;
+    }
+    .result-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #2d2d2d;
+      text-align: center;
+      margin: 14px 0 16px;
+      line-height: 1.4;
+    }
+    .result-teaser {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .line-btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: #06C755;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 1.4;
+      transition: opacity 0.2s;
+    }
+    .line-btn:hover { opacity: 0.9; }
+    .line-btn .line-small { font-size: 12px; font-weight: 400; opacity: 0.9; display: block; margin-top: 2px; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    .fade { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">あすなる 愛媛の結婚相談所</div>
+
+  <!-- TOP -->
+  <div class="screen active" id="screen-top">
+    <div class="top-icon">🔍</div>
+    <h1>婚活がうまくいかない<br>本当の理由がわかる診断</h1>
+    <p class="subtitle">「頑張っているのになぜか進まない」<br>その原因、心理の専門家が分析します。<br>所要時間：約2分</p>
+    <div class="gender-btns">
+      <button class="gender-btn" onclick="selectGender('female')">
+        <span class="icon">👩</span>女性向け
+      </button>
+      <button class="gender-btn" onclick="selectGender('male')">
+        <span class="icon">👨</span>男性向け
+      </button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="screen" id="screen-q">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="q-progress-label">質問 1 / 6</span>
+        <span id="q-progress-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="q-num" id="q-num">Q1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="nav-btns">
+      <button class="btn-back" id="btn-back" onclick="goBack()">← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-badge">
+      <div class="badge-icon" id="result-icon"></div>
+      <div class="result-type" id="result-type"></div>
+    </div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-teaser" id="result-teaser"></div>
+    <a class="line-btn" id="result-line-btn" href="#" target="_blank">
+      結果をLINEで受け取る
+      <span class="line-small">送信ボタンを押すと、くわしい結果が届きます</span>
+    </a>
+    <p class="footer-note">公認心理師・NLPカウンセラーの仲人が<br>あなたのパターンに合った対策をお届けします。</p>
+  </div>
+</div>
+
+<script>
+const questions = {
+  female: [
+    { pattern: '人間不信型', text: '初対面の人に、なかなか心を開けない方だと思う' },
+    { pattern: '人間不信型', text: '過去に傷ついた経験が、今も新しい出会いへの不安につながっている' },
+    { pattern: '男性選択ミス型', text: '結婚を考えていない男性と、長期間付き合ってしまったことがある' },
+    { pattern: '男性選択ミス型', text: '「ドキドキする人」に惹かれてしまい、「安心できる人」を選べないことがある' },
+    { pattern: '自己犠牲型', text: '相手に合わせすぎて、気づいたら自分の気持ちを後回しにしていることがある' },
+    { pattern: '自己犠牲型', text: '「NO」と言えず、相手のペースに流されてしまうことが多い' },
+  ],
+  male: [
+    { pattern: '見た目・第一印象型', text: '服装や身だしなみについて、誰かからアドバイスを受けたことがある' },
+    { pattern: '見た目・第一印象型', text: '初対面やデートの後、次の約束に繋がらないことが多い' },
+    { pattern: 'デート設計ミス型', text: 'デートのプランを自分で決めるが、相手の反応が思ったより良くないことがある' },
+    { pattern: 'デート設計ミス型', text: 'お店選びや場所選びに悩み、相手に任せてしまうことが多い' },
+    { pattern: '距離感ミス型', text: '仲良くなろうと積極的に関わったのに、相手が引いてしまったことがある' },
+    { pattern: 'コミュニケーションギャップ型', text: '会話中、気づいたら自分の話が中心になっていることがある' },
+  ]
+};
+
+const results = {
+  female: {
+    '人間不信型': {
+      icon: '🔒',
+      type: '人間不信型',
+      title: '心の壁が、新しい出会いを\nブロックしています',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+    '男性選択ミス型': {
+      icon: '🧲',
+      type: '男性選択ミス型',
+      title: '惹かれる相手のタイプに、\n無意識のクセがあります',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+    '自己犠牲型': {
+      icon: '🤝',
+      type: '自己犠牲型',
+      title: '「合わせすぎること」が、\n本当のご縁を遠ざけています',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+  },
+  male: {
+    '見た目・第一印象型': {
+      icon: '👔',
+      type: '見た目・第一印象型',
+      title: '第一印象の壁を、\nまず越えましょう',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+    'デート設計ミス型': {
+      icon: '📍',
+      type: 'デート設計ミス型',
+      title: 'デートの「設計」が、\n印象を決めています',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+    '距離感ミス型': {
+      icon: '📏',
+      type: '距離感ミス型',
+      title: '距離の縮め方に、\nズレが生じています',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+    'コミュニケーションギャップ型': {
+      icon: '💬',
+      type: 'コミュニケーションギャップ型',
+      title: '「話す」より「聴く」が、\n婚活を変えます',
+      teaser: 'このパターンには、心理学的な理由があります。',
+    },
+  }
+};
+
+const choices = ['よくある', '時々ある', 'あまりない', 'ほとんどない'];
+const scores =  [3, 2, 1, 0];
+
+let gender = '';
+let currentQ = 0;
+let answers = [];
+let totalQ = 0;
+
+function selectGender(g) {
+  gender = g;
+  answers = [];
+  currentQ = 0;
+  totalQ = questions[g].length;
+  showScreen('screen-q');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[gender][currentQ];
+  document.getElementById('q-num').textContent = 'Q' + (currentQ + 1);
+  document.getElementById('q-text').textContent = q.text;
+  const pct = Math.round((currentQ / totalQ) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-progress-label').textContent = `質問 ${currentQ + 1} / ${totalQ}`;
+  document.getElementById('q-progress-pct').textContent = pct + '%';
+
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    if (answers[currentQ] === i) btn.classList.add('selected');
+    btn.onclick = () => selectChoice(i);
+    choicesEl.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = currentQ === totalQ - 1 ? '結果を見る' : '次へ →';
+  if (answers[currentQ] !== undefined) {
+    nextBtn.classList.add('enabled');
+  } else {
+    nextBtn.classList.remove('enabled');
+  }
+
+  document.getElementById('btn-back').style.display = currentQ === 0 ? 'none' : '';
+  document.querySelector('.card').classList.add('fade');
+  setTimeout(() => document.querySelector('.card').classList.remove('fade'), 300);
+}
+
+function selectChoice(i) {
+  answers[currentQ] = i;
+  document.querySelectorAll('.choice-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('btn-next').classList.add('enabled');
+}
+
+function goNext() {
+  if (answers[currentQ] === undefined) return;
+  if (currentQ < totalQ - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  } else {
+    showScreen('screen-top');
+  }
+}
+
+function showResult() {
+  const patternScores = {};
+  questions[gender].forEach((q, i) => {
+    patternScores[q.pattern] = (patternScores[q.pattern] || 0) + scores[answers[i]];
+  });
+
+  const topPattern = Object.entries(patternScores).sort((a, b) => b[1] - a[1])[0][0];
+  const r = results[gender][topPattern];
+
+  document.getElementById('result-icon').textContent = r.icon;
+  document.getElementById('result-type').textContent = r.type;
+  document.getElementById('result-title').textContent = r.title;
+  document.getElementById('result-teaser').textContent = r.teaser;
+
+  const keyword = '診断結果：' + r.type;
+  document.getElementById('result-line-btn').href =
+    'https://line.me/R/oaMessage/%40505atdkw/?' + encodeURIComponent(keyword);
+
+  showScreen('screen-result');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
