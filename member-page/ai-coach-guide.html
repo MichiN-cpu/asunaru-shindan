@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI美知仲人コーチ　使い方ガイド</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-size: 13px;
+    line-height: 1.9;
+    color: #3d2b1f;
+    background: #fff;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 48px;
+  }
+
+  /* ヘッダー */
+  .header {
+    text-align: center;
+    padding: 28px 0 24px;
+    border-bottom: 2px solid #e8c4c4;
+    margin-bottom: 28px;
+  }
+  .header .label {
+    display: inline-block;
+    background: #e8c4c4;
+    color: #7a3e3e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #7a3e3e;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+  .header p {
+    font-size: 12px;
+    color: #9e7e7e;
+    margin-top: 6px;
+  }
+
+  /* QRコードエリア */
+  .qr-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: #fdf5f5;
+    border: 1.5px solid #e8c4c4;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .qr-section img {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid #e8c4c4;
+  }
+  .qr-text h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #7a3e3e;
+    margin-bottom: 6px;
+  }
+  .qr-text p {
+    font-size: 12px;
+    color: #6b5050;
+    line-height: 1.8;
+  }
+  .qr-text .url {
+    font-size: 11px;
+    color: #9e7e7e;
+    margin-top: 6px;
+  }
+
+  /* セクション */
+  .section {
+    margin-bottom: 24px;
+  }
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #7a3e3e;
+    padding: 6px 12px;
+    background: #fdf0f0;
+    border-left: 3px solid #e8c4c4;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+  }
+  .section p {
+    font-size: 13px;
+    color: #3d2b1f;
+    margin-bottom: 8px;
+  }
+
+  /* 効果ボックス */
+  .effect-box {
+    background: #fdf5f5;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 10px 0;
+  }
+  .effect-box p {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .effect-list {
+    list-style: none;
+    padding: 0;
+  }
+  .effect-list li {
+    font-size: 13px;
+    padding: 3px 0 3px 18px;
+    position: relative;
+    color: #3d2b1f;
+  }
+  .effect-list li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: #e8a0a0;
+    font-size: 10px;
+    top: 6px;
+  }
+
+  /* 使える場面リスト */
+  .scene-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .scene-item {
+    background: #fdf5f5;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+    color: #5a3030;
+    padding-left: 22px;
+    position: relative;
+  }
+  .scene-item::before {
+    content: "✓";
+    position: absolute;
+    left: 8px;
+    color: #e8a0a0;
+  }
+
+  /* プライバシーボックス */
+  .privacy-box {
+    background: #f5f5fd;
+    border: 1.5px solid #c4c4e8;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 8px;
+  }
+  .privacy-box p {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .privacy-box .emphasis {
+    font-weight: 700;
+    color: #3e3e7a;
+  }
+
+  /* ヒントボックス */
+  .tip-box {
+    background: #f5fdf5;
+    border-left: 3px solid #a0c8a0;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 8px;
+  }
+  .tip-box p { font-size: 12.5px; }
+
+  /* 注意ボックス */
+  .note-box {
+    background: #fdf8f0;
+    border-left: 3px solid #d4aa70;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 8px;
+  }
+  .note-box p { font-size: 12.5px; }
+
+  /* フッター */
+  .footer {
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid #e8c4c4;
+    font-size: 11px;
+    color: #9e7e7e;
+  }
+
+  /* 印刷設定 */
+  @media print {
+    body { font-size: 12px; }
+    .page { padding: 20px 32px; }
+    .section { margin-bottom: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <p style="margin-bottom:16px;"><a href="index.html" style="color:#9e7e7e; font-size:12px; text-decoration:none;">← 会員特典ページに戻る</a></p>
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <img src="assets/guide_illustration.png" alt="" style="width:140px; height:140px; object-fit:contain; margin-bottom:12px; display:block; margin-left:auto; margin-right:auto;">
+    <div class="label">あすなる愛媛　会員様へ</div>
+    <h1>AI美知仲人コーチ<br>使い方ガイド</h1>
+    <p>中嶋美知（仲人・公認心理師）の考え方をベースにしたAIコーチです</p>
+  </div>
+
+  <!-- QRコード -->
+  <div class="qr-section">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=https://lin.ee/WHUCFu5&color=7a3e3e&bgcolor=fdf5f5" alt="QRコード">
+    <div class="qr-text">
+      <h2>LINEで友だち追加してください</h2>
+      <p>QRコードを読み取るか、LINEで<br>「AI美知仲人コーチ」を検索してください。<br>追加したらそのまま話しかけてください。</p>
+      <p class="url">https://lin.ee/WHUCFu5</p>
+    </div>
+  </div>
+
+  <!-- 効果 -->
+  <div class="section">
+    <div class="section-title">使うと、何が変わる？</div>
+    <div class="effect-box">
+      <p>婚活には波があります。早く・うまく進んでいく方には共通点があります。<br>
+      お見合いやデートをこなすだけでなく、<strong>こまめに振り返り、気持ちをシェアしている</strong>ということです。</p>
+    </div>
+    <ul class="effect-list">
+      <li>うまくいっている時 → 言語化することでさらに続けられる</li>
+      <li>モヤモヤしている時 → 一人で抱えず、早く気持ちを軽くできる</li>
+      <li>婚活が楽しいという感覚が続く</li>
+    </ul>
+    <p style="margin-top:10px; font-size:12.5px; color:#7a3e3e; font-weight:700;">
+      振り返り・準備・気持ちの整理を丁寧にできる会員さんほど、早く・納得して進んでいきます。
+    </p>
+  </div>
+
+  <!-- プライバシー -->
+  <div class="section">
+    <div class="section-title">会話は仲人に見られる？</div>
+    <div class="privacy-box">
+      <p><span class="emphasis">仲人には、会話の内容はもちろん、会話が行われていること自体もわかりません。</span></p>
+      <p>「こんなこと仲人に言いにくい」「弱音を見せたくない」「まだうまく言葉にできない」——そういうことも、このコーチになら話せます。</p>
+      <p>AIで話して自分の中で整理してから仲人と面談すると、次の一歩がより一層出やすくなります。</p>
+    </div>
+  </div>
+
+  <!-- 使える場面 -->
+  <div class="section">
+    <div class="section-title">こんな時に使えます</div>
+    <div class="scene-grid">
+      <div class="scene-item">お見合い前、緊張をほぐしたい</div>
+      <div class="scene-item">お見合い後、気持ちを整理したい</div>
+      <div class="scene-item">デートの振り返りをしたい</div>
+      <div class="scene-item">なんかモヤモヤしてる</div>
+      <div class="scene-item">婚活のやる気を取り戻したい</div>
+      <div class="scene-item">LINEのやり取りで迷っている</div>
+      <div class="scene-item">10年後の結婚生活をイメージしたい</div>
+      <div class="scene-item">なんとなく話したい時</div>
+      <div class="scene-item">「〜は嫌」を前向きな言葉にしたい</div>
+    </div>
+  </div>
+
+  <!-- 新機能：肯定的な未来設定モード -->
+  <div class="section">
+    <div class="section-title">新機能：肯定的な未来設定モード</div>
+    <div class="effect-box">
+      <p>「一緒にいてつまらない人は嫌」のように、<strong>「〜は嫌」「〜したくない」</strong>という言葉ばかりが浮かんで、本当はどうしたいのかが言葉にならない——そんな時のための機能です。</p>
+      <p style="margin-top:8px;">AIコーチに<strong>「肯定的な未来設定モードでお願い」</strong>と伝えるだけで始まります。嫌なことをまず受け止めた上で、「それを言い換えるとしたら、どんな感じ？」と一緒に前向きな言葉を探していきます。</p>
+    </div>
+    <div class="tip-box" style="margin-top:8px;">
+      <p><strong>やめたい時は：</strong>「言い換えはもういい」「そのままでいい」と伝えれば、すぐに普通に話を聞くモードに戻ります。無理に前向きにさせられることはありません。</p>
+    </div>
+  </div>
+
+  <!-- 使い方ヒント -->
+  <div class="section">
+    <div class="section-title">使い方のヒント</div>
+    <div class="tip-box">
+      <p><strong>最初に聞かれます：</strong>「今日はどんなことで話しかけてくれたの？サクッと短めにしたい？それともじっくり話したい？」<br>
+      気分で答えてください。「短めで」でも「じっくり」でも大丈夫です。</p>
+    </div>
+    <div class="tip-box" style="margin-top:8px;">
+      <p><strong>音声入力が便利です：</strong>キーボードのマイクボタンをタップして話すだけ。多少誤変換があっても文脈で読んでくれます。</p>
+    </div>
+    <div class="tip-box" style="margin-top:8px;">
+      <p><strong>途中でやめたい時：</strong>「今日はここまで」「もうええわ」「ありがとう」で終われます。答えたくないことは「それは聞かれたくない」と言えばすぐ話題を変えます。</p>
+    </div>
+  </div>
+
+  <!-- 仲人に話したい時 -->
+  <div class="section">
+    <div class="section-title">仲人に直接話したい時は</div>
+    <div class="note-box">
+      <p>LINEの画面下にある<strong>ピンクのバー</strong>から連絡してください。<br>AIコーチとは別に、仲人本人に繋がります。</p>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <p>あすなる愛媛　中嶋美知（仲人・公認心理師）</p>
+    <p style="margin-top:4px;">ご不明な点は仲人までお気軽にどうぞ</p>
+  </div>
+
+</div>
+</body>
+</html>
