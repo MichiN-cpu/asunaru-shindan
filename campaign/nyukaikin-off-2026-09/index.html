@@ -59,13 +59,17 @@
   }
 
   .hero-offer {
-    display: inline-flex;
+    display: flex;
     align-items: baseline;
+    justify-content: center;
     gap: 8px;
     background: #fff;
     border-radius: 14px;
     padding: 12px 22px;
     margin-top: 20px;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
     box-shadow: 0 6px 18px rgba(0,0,0,0.2);
   }
   .hero-offer .tag {
@@ -86,8 +90,9 @@
   }
 
   .hero-cta {
-    display: block;
-    margin-top: 20px;
+    display: block !important;
+    max-width: 340px;
+    margin: 14px auto 0 !important;
     font-size: 16px !important;
     padding: 14px 36px !important;
     background: #fff !important;
