@@ -23,11 +23,11 @@
   header {
     position: relative;
     background:
-      linear-gradient(180deg, rgba(180,40,80,0.08) 0%, rgba(180,40,80,0.25) 55%, rgba(140,30,65,0.6) 100%),
+      linear-gradient(180deg, rgba(180,40,80,0.1) 0%, rgba(180,40,80,0.3) 55%, rgba(140,30,65,0.68) 100%),
       #c4847a url('assets/hero-couple.jpg') center 30% / cover no-repeat;
     color: #fff;
     text-align: center;
-    padding: 64px 20px 40px;
+    padding: 48px 20px 30px;
     min-height: 440px;
     display: flex;
     flex-direction: column;
@@ -54,9 +54,49 @@
   }
   header p.lead {
     font-size: 15.5px;
-    margin-top: 16px;
+    margin-top: 14px;
     font-weight: 500;
     text-shadow: 0 2px 10px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .hero-offer {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 12px 22px;
+    margin-top: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  }
+  .hero-offer .tag {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #fce8ee;
+    border-radius: 10px;
+    padding: 3px 8px;
+  }
+  .hero-offer .amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+  .hero-offer .amount b {
+    font-size: 26px;
+  }
+
+  .hero-cta {
+    margin-top: 20px;
+    font-size: 16px !important;
+    padding: 14px 36px !important;
+  }
+
+  .hero-trust {
+    font-size: 12.5px;
+    margin-top: 12px;
+    opacity: 0.95;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
 
   .sparkle-divider {
@@ -219,6 +259,14 @@
   <div class="badge">期間限定キャンペーン 2026.9.19 - 10.18</div>
   <h1>喜びが喜びを生む、<br>はじまりのキャンペーン</h1>
   <p class="lead">一人より二人が心地良い、そのはじまりを、後押しします。</p>
+
+  <div class="hero-offer">
+    <span class="tag">今なら</span>
+    <span class="amount">入会金 <b>11,000円</b> OFF</span>
+  </div>
+
+  <a class="cta-btn hero-cta" href="https://www.asunaru.jp/soudan" target="_blank">無料相談を予約する</a>
+  <p class="hero-trust">公認心理師の仲人が伴走／Zoomで30分・売り込みなし</p>
 </header>
 
 <section>
