@@ -60,14 +60,14 @@
 
   .hero-offer {
     display: flex;
-    align-items: baseline;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 8px;
     background: #fff;
     border-radius: 14px;
-    padding: 12px 22px;
+    padding: 16px 20px;
     margin-top: 20px;
-    max-width: 340px;
+    max-width: 320px;
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 6px 18px rgba(0,0,0,0.2);
@@ -78,15 +78,17 @@
     color: var(--accent);
     background: #fce8ee;
     border-radius: 10px;
-    padding: 3px 8px;
+    padding: 3px 10px;
+    white-space: nowrap;
   }
   .hero-offer .amount {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
     color: var(--accent-dark);
+    white-space: nowrap;
   }
   .hero-offer .amount b {
-    font-size: 26px;
+    font-size: 25px;
   }
 
   .hero-cta {
